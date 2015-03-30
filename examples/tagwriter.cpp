@@ -34,6 +34,7 @@
 #include <fileref.h>
 #include <tfile.h>
 #include <tag.h>
+#include <tpropertymap.h>
 
 using namespace std;
 
@@ -65,6 +66,10 @@ void usage()
   cout << "  -g <genre>"   << endl;
   cout << "  -y <year>"    << endl;
   cout << "  -T <track>"   << endl;
+  cout << "  -C <COMPOSER>"   << endl;
+  cout << "  -d <DATE>"   << endl;
+  cout << "  -D <DISCNUMBER>"   << endl;
+  cout << "  -p <ALBUMARTIST>"   << endl;
   cout << endl;
 
   exit(1);
@@ -92,12 +97,15 @@ int main(int argc, char *argv[])
     if(isArgument(argv[i]) && i + 1 < argc && !isArgument(argv[i + 1])) {
 
       char field = argv[i][1];
-      TagLib::String value = argv[i + 1];
+      TagLib::String value = TagLib::String(argv[i + 1],TagLib::String::UTF8);
 
+      TagLib::StringList valList (TagLib::String(argv[i + 1],TagLib::String::UTF8));
+      
       TagLib::List<TagLib::FileRef>::ConstIterator it;
       for(it = fileList.begin(); it != fileList.end(); ++it) {
 
         TagLib::Tag *t = (*it).tag();
+        TagLib::PropertyMap pmap = (*it).file()->properties();
 
         switch (field) {
         case 't':
@@ -120,6 +128,22 @@ int main(int argc, char *argv[])
           break;
         case 'T':
           t->setTrack(value.toInt());
+          break;
+        case 'C':
+          pmap ["COMPOSER"] = valList;
+          (*it).file()->setProperties (pmap);
+          break;
+        case 'd':
+          pmap ["DATE"] = valList;
+          (*it).file()->setProperties (pmap);
+          break;
+        case 'D':
+          pmap ["DISCNUMBER"] = valList;
+          (*it).file()->setProperties (pmap);
+          break;
+        case 'p':
+          pmap ["ALBUMARTIST"] = valList;
+          (*it).file()->setProperties (pmap);
           break;
         default:
           usage();
