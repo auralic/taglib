@@ -162,9 +162,9 @@ PropertyMap MPEG::File::setProperties(const PropertyMap &properties)
   if(d->hasID3v1)
     // update ID3v1 tag if it exists, but ignore the return value
     d->tag.access<ID3v1::Tag>(ID3v1Index, false)->setProperties(properties);
-  if(d->hasID3v2)
-  	d->tag.access<ID3v2::Tag>(ID3v2Index, true)->setProperties(properties);
-  return d->tag.access<APE::Tag>(APEIndex, true)->setProperties(properties);
+  if(d->hasAPE)
+  	d->tag.access<APE::Tag>(APEIndex, true)->setProperties(properties);
+  return d->tag.access<ID3v2::Tag>(ID3v2Index, true)->setProperties(properties);
 }
 
 MPEG::Properties *MPEG::File::audioProperties() const

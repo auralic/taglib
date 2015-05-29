@@ -122,6 +122,11 @@ File *FileRef::file() const
   return d->file;
 }
 
+bool FileRef::isOpen()
+{
+  return (d->file != NULL) && d->file->isOpen();
+}
+
 bool FileRef::save()
 {
   if(isNull()) {

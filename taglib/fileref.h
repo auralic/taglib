@@ -179,6 +179,10 @@ namespace TagLib {
      */
     File *file() const;
 
+	/*!
+     * check is open.  Returns true on success.
+     */
+	bool isOpen();
     /*!
      * Saves the file.  Returns true on success.
      */
